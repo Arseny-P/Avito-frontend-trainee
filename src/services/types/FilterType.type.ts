@@ -4,6 +4,6 @@ export type FilterType = {
     skip?: number;
     categories?: string[];
     needsRevision?: boolean;
-    sortColumn?: 'title' | 'createdAt';
+    sortColumn?: 'title' | 'createdAt' | 'price';
     sortDirection?: 'asc' | 'desc';
 }

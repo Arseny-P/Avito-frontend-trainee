@@ -53,7 +53,7 @@ const PagePostsList = () => {
 
   const onSelectSort = (value: string) => {
     const parts = value.split('_');
-    const column = parts[0] as 'title' | 'createdAt';
+    const column = parts[0] as 'title' | 'createdAt' | 'price';
     const direction = parts[1] as 'asc' | 'desc';
 
     dispatch(PostListSlice.actions.setSortColumn(column));
@@ -119,6 +119,8 @@ const PagePostsList = () => {
                   { value: 'createdAt_desc', label: 'По новизне (сначала старые)' },
                   { value: 'title_desc', label: 'По названию (Я → А)' },
                   { value: 'title_asc', label: 'По названию (А → Я)' },
+                  { value: 'price_asc', label: 'По возрастанию цены' },
+                  { value: 'price_desc', label: 'По убыванию цены' },
                 ]}
               />
             </Flex>

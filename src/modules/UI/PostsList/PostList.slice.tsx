@@ -5,7 +5,7 @@ type postListState = {
     categories: string[],
     page: number,
     search: string,
-    sortColumn: 'title' | 'createdAt',
+    sortColumn: 'title' | 'createdAt' | 'price',
     sortDirection: 'asc' | 'desc',
     vision: 'table' | 'list',
 }
@@ -56,7 +56,7 @@ export const PostListSlice = createSlice({
             state.search = action.payload;
         },
 
-        setSortColumn: (state: postListState, action: PayloadAction<'title' | 'createdAt'>) => {
+        setSortColumn: (state: postListState, action: PayloadAction<'title' | 'createdAt' | 'price'>) => {
             state.sortColumn = action.payload;
         },
 
