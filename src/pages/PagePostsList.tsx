@@ -2,13 +2,13 @@ import { Empty, Flex, Input, Layout, Pagination, Result, Segmented, Select, Skel
 import { useGetPosts } from "../services/hooks/useGetPosts"
 import { Content, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
-import AppMenu from "../modules/Menu/AppMenu";
-import PostsList from "../modules/PostsList/PostsList";
+import AppMenu from "../modules/UI/Menu/AppMenu";
+import PostsList from "../modules/UI/PostsList/PostsList";
 import type { FilterType } from "../services/types/FilterType.type";
 import { useAppDispatch, useAppSelector } from "../store";
 import { AppstoreOutlined, BarsOutlined, LoadingOutlined } from "@ant-design/icons";
 import type { AxiosError } from "axios";
-import { PostListSlice } from "../modules/PostsList/PostList.slice";
+import { PostListSlice } from "../modules/UI/PostsList/PostList.slice";
 import { shallowEqual } from "react-redux";
 
 const PagePostsList = () => {
@@ -85,15 +85,15 @@ const PagePostsList = () => {
           }}
           >
             <Typography.Title level={2} style={{margin: 0}}>Мои объявления</Typography.Title>
-            {isLoading 
-            ? <Skeleton.Input active size="small" />
-            : <Typography.Title level={4} style={{margin: 0, fontWeight: 400, color: "#848388"}}>{
+            {isLoading ?(
+              <Skeleton.Input active size="small" />
+            ) : (
+              <Typography.Title level={4} style={{margin: 0, fontWeight: 400, color: "#848388"}}>{
                 posts?.total 
                 ? posts?.total + ' ' + (posts?.total === 1 ? 'объявление' : 'объявления')
                 : "Нет объявлений"
               }</Typography.Title>
-          }
-            
+            )}
           </Flex>
           <Flex style={{
             alignItems: 'center',
@@ -151,18 +151,16 @@ const PagePostsList = () => {
               
             }
             {
-              posts?.total === 0
-              ? <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={
+              posts?.total === 0 ? (
+               <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={
                   <Typography.Text> Нет объявлений </Typography.Text>
                 }/>
-              : (posts?.items &&  
+              ) : (posts?.items &&  
               <>
                 <PostsList posts={posts?.items}/>
                 <Pagination total={posts?.total} defaultCurrent={1} current={page} pageSize={postPerPage} onChange={onChange}/>
-              </>)
-            }
-            
-            
+              </>
+            )}            
           </Content>
         </Layout>
       </Layout>

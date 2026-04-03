@@ -1,5 +1,5 @@
-import type { PostType } from "../../services/types/Post.type";
-import { useAppSelector } from "../../store";
+import type { PostType } from "../../../services/types/Post.type";
+import { useAppSelector } from "../../../store";
 import Post from "../Post/Post";
 import { PostListSlice } from "./PostList.slice";
 

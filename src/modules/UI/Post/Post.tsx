@@ -1,11 +1,10 @@
-import type { PostType } from "../../services/types/Post.type"
+import type { PostType } from "../../../services/types/Post.type"
 import { Card, Flex, Tag, Typography } from 'antd';
 import { PictureOutlined } from "@ant-design/icons";
 import { Link } from "react-router";
 import { PostListSlice } from "../PostsList/PostList.slice";
-import { useAppSelector } from "../../store";
+import { useAppSelector } from "../../../store";
 
-// TODO: Сделать вариант поста в строку
 const Post = ({id, category, title, price, needsRevision}: PostType) => {
   const getCategory = () => {
     switch(category) {
@@ -16,7 +15,7 @@ const Post = ({id, category, title, price, needsRevision}: PostType) => {
   }
 
   return (
-    <Link to={`/abs/${id}`}>
+    <Link to={`/ads/${id}`}>
       {useAppSelector((state) => PostListSlice.selectors.getVision(state)) === 'list' 
       ? <Card
         hoverable 

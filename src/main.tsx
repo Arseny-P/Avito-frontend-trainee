@@ -23,6 +23,12 @@ createRoot(document.getElementById('root')!).render(
         fontSize: 14,
         colorText: "rgba(0, 0, 0, 0.85)",
       },
+      components: {
+        Menu: {
+          itemBg: '#fff',
+          subMenuItemBg: '#fff',
+        },
+      },
     }}
   >
     <Provider store={store}>
@@ -31,10 +37,10 @@ createRoot(document.getElementById('root')!).render(
         <BrowserRouter>
           <Routes>
             <Route path="/">
-              <Route index element={<Navigate to="/abs" replace />} />
-              <Route path="abs" element={<PagePostsList />}/>
-              <Route path='/abs/:id' element={<PagePost />} />
-              <Route path="*" element={<Navigate to="/abs" replace />} />
+              <Route index element={<Navigate to="/ads" replace />} />
+              <Route path="ads" element={<PagePostsList />}/>
+              <Route path='/ads/:id' element={<PagePost />} />
+              <Route path="*" element={<Navigate to="/ads" replace />} />
             </Route>
           </Routes>
         </BrowserRouter>

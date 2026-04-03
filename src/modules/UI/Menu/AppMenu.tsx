@@ -1,6 +1,6 @@
 import type { MenuProps } from 'antd';
 import { Button, Checkbox, Divider, Flex, Menu, Switch, Typography } from 'antd';
-import { useAppDispatch, useAppSelector } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../../store';
 import { PostListSlice } from '../PostsList/PostList.slice';
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -52,7 +52,7 @@ const AppMenu = () => {
         <Flex vertical style={{gap: 10}}>
           <Flex vertical style={{ backgroundColor: '#fff', borderRadius: 16, padding: 16}}>
             <Typography.Title level={4} style={{margin: 0}}>Фильтры</Typography.Title>
-            <Menu items={ items } mode="inline" styles={{ item: { paddingLeft: 0 } }}></Menu>
+            <Menu items={ items } mode="inline" style={{border: "none"}}></Menu>
             <Divider style={{ margin: 0 }} />
             <Flex align="center" justify="space-between">
               <Typography.Title level={5}>Только требующие доработок</Typography.Title>

@@ -1,6 +1,6 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { PostListSlice } from "./modules/PostsList/PostList.slice";
+import { PostListSlice } from "./modules/UI/PostsList/PostList.slice";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
 
