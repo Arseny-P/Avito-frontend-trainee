@@ -1,7 +1,11 @@
 import type { PostType } from "../../services/types/Post.type"
 import { Card, Flex, Tag, Typography } from 'antd';
 import { PictureOutlined } from "@ant-design/icons";
+import { Link } from "react-router";
+import { PostListSlice } from "../PostsList/PostList.slice";
+import { useAppSelector } from "../../store";
 
+// TODO: Сделать вариант поста в строку
 const Post = ({id, category, title, price, needsRevision}: PostType) => {
   const getCategory = () => {
     switch(category) {
@@ -12,8 +16,60 @@ const Post = ({id, category, title, price, needsRevision}: PostType) => {
   }
 
   return (
-    <>
-      <Card 
+    <Link to={`/abs/${id}`}>
+      {useAppSelector((state) => PostListSlice.selectors.getVision(state)) === 'list' 
+      ? <Card
+        hoverable 
+        style={{width: "100%", borderRadius: 24, overflow: 'hidden'}}        
+        styles={{ body: { padding: 0, height: "100%" } }}
+      >
+        <Flex style={{ height: "100%"}} align="stretch">
+          <div style={{   
+            width: 180, 
+            backgroundColor: '#FAFAFA', 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            flexShrink: 0
+          }}>
+            <PictureOutlined style={{ fontSize: 64, color: '#bfbfbf' }} />
+          </div>
+          <Flex vertical style={{gap: 4, padding: "16px 24px"}}>
+            <Tag style={{ color: "#848388", fontWeight: 400, padding: 0, margin: 0, background: "none" }}>{ getCategory() }</Tag>
+            <Typography.Title level={5} style={{marginBlock:0, flexShrink: 0}} ellipsis={true}>{ title }</Typography.Title>
+            <Typography.Text strong style={{color: "rgba(0, 0, 0, 0.45)"}}>{ price } ₽</Typography.Text>
+            {
+              needsRevision && 
+              <Tag 
+                color="warning" 
+                style={{ 
+                  width: 'fit-content',
+                  borderRadius: 8, 
+                  padding: '2px 8px', 
+                  lineHeight: "22px",
+                  border: 'none',
+                  backgroundColor: '#fdf2e9',
+                  color: '#d48806',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  gap: 8
+                }}
+              >
+                <span style={{ 
+                  width: 6, 
+                  height: 6, 
+                  backgroundColor: '#d48806', 
+                  borderRadius: '50%' 
+                }} />
+                Требует доработок
+              </Tag>
+            }
+          </Flex>
+        </Flex>
+      </Card>
+      : <Card
+        hoverable 
         style={{width: 200, borderRadius: 24, overflow: 'hidden'}}
         cover={
           
@@ -43,11 +99,7 @@ const Post = ({id, category, title, price, needsRevision}: PostType) => {
         styles={{ body: { padding: '16px' } }}
       >
         <Flex vertical>
-          <Typography.Title level={5} style={{margin: 0}} ellipsis={{
-            rows: 2,
-            expandable: 'collapsible',
-            expanded: true
-          }}>{ title }</Typography.Title>
+          <Typography.Title level={5} style={{margin: 0}} ellipsis={true}>{ title }</Typography.Title>
           <Typography.Text strong style={{color: "rgba(0, 0, 0, 0.45)"}}>{ price } ₽</Typography.Text>
           {
             needsRevision && 
@@ -78,7 +130,9 @@ const Post = ({id, category, title, price, needsRevision}: PostType) => {
           }
         </Flex>
       </Card>
-    </>
+      }
+      
+    </Link>
   )
 }
 

@@ -1,13 +1,31 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { MenuSlice } from "./modules/Menu/Menu.slice";
+import { PostListSlice } from "./modules/PostsList/PostList.slice";
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/es/storage';
 
-export const store = configureStore({
-    reducer: {
-        [MenuSlice.name]: MenuSlice.reducer
-    },
+const rootReducer = combineReducers({
+  [PostListSlice.name]: PostListSlice.reducer,
 });
 
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['postList'],
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const store = configureStore({
+  reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE', 'persist/REGISTER'],
+      },
+    }),
+});
+export const persistor = persistStore(store)
 
 export type AppState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

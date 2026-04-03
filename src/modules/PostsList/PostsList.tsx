@@ -1,12 +1,19 @@
 import type { PostType } from "../../services/types/Post.type";
+import { useAppSelector } from "../../store";
 import Post from "../Post/Post";
+import { PostListSlice } from "./PostList.slice";
 
 const PostsList = ({posts} : {posts: PostType[]}) => {
-    
+  const getVision = () => {
+    switch (useAppSelector((state) => PostListSlice.selectors.getVision(state))) {
+      case 'table': return 'repeat(5, 1fr)';
+      case 'list': return '1fr';
+    }
+  }
   return (
     <div style={{ 
         display: 'grid',
-        gridTemplateColumns: 'repeat(5, 1fr)', 
+        gridTemplateColumns: getVision(), 
         rowGap: '12px', 
     }}>
         {posts.map(post => (

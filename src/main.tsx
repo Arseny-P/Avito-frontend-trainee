@@ -4,21 +4,15 @@ import App from './App.tsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { store } from './store.ts';
+import { store, persistor } from './store.ts';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
 import PagePostsList from './pages/PagePostsList.tsx';
-import { ConfigProvider, Grid } from 'antd';
+import { ConfigProvider, Spin } from 'antd';
+import PagePost from './pages/PagePost.tsx';
+import { PersistGate } from 'redux-persist/integration/react';
+import { LoadingOutlined } from '@ant-design/icons';
 
 const queryClient = new QueryClient();
-// const { useBreakpoint } = Grid;
-
-// const screens = useBreakpoint();
-
-// const getFontSize = () => {
-//   if (screens.xxl) return 16;
-//   if (screens.md) return 14;
-//   return 12;
-// };
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -32,18 +26,22 @@ createRoot(document.getElementById('root')!).render(
     }}
   >
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
+      <PersistGate loading={<Spin style={{width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center'}} indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />} persistor={persistor}>
+        <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <Routes>
             <Route path="/">
               <Route index element={<Navigate to="/abs" replace />} />
               <Route path="abs" element={<PagePostsList />}/>
+              <Route path='/abs/:id' element={<PagePost />} />
+              <Route path="*" element={<Navigate to="/abs" replace />} />
             </Route>
           </Routes>
         </BrowserRouter>
         <App />
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
+      </PersistGate>
     </Provider>
   </ConfigProvider>
   </StrictMode>,
