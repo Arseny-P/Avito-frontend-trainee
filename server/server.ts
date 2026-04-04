@@ -20,9 +20,10 @@ fastify.use((_, __, next) =>
 );
 
 // Настройка CORS
-fastify.use((_, reply, next) => {
-  reply.setHeader('Access-Control-Allow-Origin', '*');
-  next();
+await fastify.register((await import('@fastify/cors')).default, {
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 });
 
 interface ItemGetRequest extends Fastify.RequestGenericInterface {

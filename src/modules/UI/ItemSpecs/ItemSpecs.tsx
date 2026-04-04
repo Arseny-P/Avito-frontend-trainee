@@ -48,15 +48,14 @@ const ItemSpecs = ({ category, params}: specsProps) => {
       }
     });
 
-    const exisiting = Object.entries(params)
-      .map(([key, value]) => ({
+    const allCategorySpecs = specKeys.map((key) => ({
         key: key,
         label: labels[key],
-        value: value,
+        value: params[key as keyof typeof params],
       })) as specType[];
     
-    const present = exisiting.filter(({key, label, value}) => value !== undefined)
-    return { specsList: present, missingNames: missing, exisitingSpecs: exisiting };
+    const present = allCategorySpecs.filter(({key, label, value}) => value !== undefined)
+    return { specsList: present, missingNames: missing, exisitingSpecs: allCategorySpecs };
   }, [category, params]);
 
   useEffect(() => {

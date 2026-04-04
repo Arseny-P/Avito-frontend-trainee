@@ -69,9 +69,8 @@ const Post = ({id, category, title, price, needsRevision}: PostType) => {
       </Card>
       : <Card
         hoverable 
-        style={{width: 200, borderRadius: 24, overflow: 'hidden'}}
+        style={{width: 200, height: 268, borderRadius: 24, overflow: 'hidden'}}
         cover={
-          
           <div style={{ 
             height: 150, 
             backgroundColor: '#FAFAFA', 
