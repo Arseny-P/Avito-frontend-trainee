@@ -3,15 +3,17 @@ import { useDispatch, useSelector, useStore } from "react-redux";
 import { PostListSlice } from "./modules/UI/PostsList/PostList.slice";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
+import { ItemSpecsSLice } from "./modules/UI/ItemSpecs/ItemSpecs.slice";
 
 const rootReducer = combineReducers({
   [PostListSlice.name]: PostListSlice.reducer,
+  [ItemSpecsSLice.name]: ItemSpecsSLice.reducer,
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['postList'],
+  whitelist: ['postList', 'itemSpecs'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

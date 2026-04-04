@@ -5,30 +5,35 @@ import type {
   ElectronicsItemParams, 
   RealEstateItemParams 
 } from "../../../services/types/QueryUpdatePost.type";
-import { autoLabels, electronicsLabels, realEstateLabels } from "./ItemSpecsName";
+import { autoLabels, electronicsLabels, realEstateLabels } from "./ItemsParams/ItemSpecsName";
+import { useAppDispatch } from "../../../store";
+import { ItemSpecsSLice } from "./ItemSpecs.slice";
+import type { specType } from "../../../services/types/SpecType.type";
+import { AutoSpecsKey, ElectronicsSpecsKey, RealEstateSpecsKey } from "./ItemsParams/ItemSpecsKey";
 
 type specsProps = {
   category: string;
   params: AutoItemParams | RealEstateItemParams | ElectronicsItemParams;
-  setMissingSpecs: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
-const ItemSpecs = ({ category, params, setMissingSpecs }: specsProps) => {
-  const { specsList, missing } = useMemo(() => {
+const ItemSpecs = ({ category, params}: specsProps) => {
+  const dispatch = useAppDispatch();
+
+  const { specsList, missingNames, exisitingSpecs } = useMemo(() => {
     let specKeys: string[] = [];
     let labels: Record<string, string> = {};
 
     switch (category) {
       case "auto":
-        specKeys = ["brand", "model", "yearOfManufacture", "transmission", "mileage", "enginePower"];
+        specKeys = AutoSpecsKey;
         labels = autoLabels;
         break;
       case "real_estate":
-        specKeys = ["type", "address", "area", "floor"];
+        specKeys = RealEstateSpecsKey;
         labels = realEstateLabels;
         break;
       case "electronics":
-        specKeys = ["type", "brand", "model", "condition", "color"];
+        specKeys = ElectronicsSpecsKey;
         labels = electronicsLabels;
         break;
       default:
@@ -36,26 +41,30 @@ const ItemSpecs = ({ category, params, setMissingSpecs }: specsProps) => {
         labels = {};
     }
 
-    const missingFields: string[] = [];
+    const missing: string[] = [];
     specKeys.forEach((key) => {
       if (params[key as keyof typeof params] === undefined) {
-        missingFields.push(labels[key]);
+         missing.push(labels[key]);
       }
     });
 
-    const ourSpecs = Object.entries(params)
-      .filter(([_, value]) => value !== undefined)
+    const exisiting = Object.entries(params)
       .map(([key, value]) => ({
+        key: key,
         label: labels[key],
-        value: String(value),
-      }));
-
-    return { specsList: ourSpecs, missing: missingFields };
+        value: value,
+      })) as specType[];
+    
+    const present = exisiting.filter(({key, label, value}) => value !== undefined)
+    return { specsList: present, missingNames: missing, exisitingSpecs: exisiting };
   }, [category, params]);
 
   useEffect(() => {
-    setMissingSpecs(missing);
-  }, [missing, setMissingSpecs]);
+    dispatch(ItemSpecsSLice.actions.setAllSpecs({
+        existing: exisitingSpecs,
+        missing: missingNames
+    }));
+  }, [exisitingSpecs, missingNames, dispatch]);
 
   if(specsList.length === 0) {
     return <Typography.Text style={{ color: "rgba(0, 0, 0, 0.45)" }} strong>Отсутствуют</Typography.Text>;
@@ -63,8 +72,8 @@ const ItemSpecs = ({ category, params, setMissingSpecs }: specsProps) => {
   return (
     <>
       {specsList.map((spec, index) => (
-        <Flex key={index} gap={12} style={{ marginBottom: 8 }}>
-          <Typography.Text style={{ width: 148, color: "rgba(0, 0, 0, 0.45)" }} strong>{spec.label}</Typography.Text>
+        <Flex key={index} gap={12} style={{marginBottom: 8}}>
+          <Typography.Text style={{ width: 148, color: "rgba(0, 0, 0, 0.45)"}} strong>{spec.label}</Typography.Text>
           <Typography.Text>{spec.value}</Typography.Text>
         </Flex>
       ))}

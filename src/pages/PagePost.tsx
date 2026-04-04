@@ -3,15 +3,15 @@ import { useGetSinglePost } from '../services/hooks/useSinglePost';
 import { Button, Divider, Flex, Layout, Result, Skeleton, Spin, Typography } from 'antd';
 import { Content, Header } from 'antd/es/layout/layout';
 import { EditOutlined, LoadingOutlined, PictureOutlined } from '@ant-design/icons';
-import { useState } from 'react';
 import ItemSpecs from '../modules/UI/ItemSpecs/ItemSpecs';
 import MissingSpecsCard from '../modules/UI/MissingSpecsCard/MissingSpecsCard';
+import { useAppSelector } from '../store';
+import { ItemSpecsSLice } from '../modules/UI/ItemSpecs/ItemSpecs.slice';
 
 const PagePost = () => {
-  const [missingSpecs, setMissingSpecs] = useState<string[]>([]);
+  const missingSpecs = useAppSelector((state) => ItemSpecsSLice.selectors.getMissingSpecsName(state));
 
-  const createDate = (date: string | undefined) => {
-    if(!date) return 'не было изменений';
+  const createDate = (date: string) => {
      return new Date( Date.parse(date) ).toLocaleString('ru-RU', {
         day: 'numeric',
         month: 'long',
@@ -51,7 +51,7 @@ const PagePost = () => {
                     ) : (
                         <Flex vertical gap={12}>
                             <Typography.Title level={2} style={{margin: 0}}>{data?.title}</Typography.Title>
-                            <Button type="primary" icon={<EditOutlined />} iconPlacement="end" style={{width: "fit-content"}}>Редактировать</Button>
+                            <Button onClick={() => navigate(`/ads/${id}/edit`)} type="primary" icon={<EditOutlined />} iconPlacement="end" style={{width: "fit-content"}}>Редактировать</Button>
                         </Flex>
                     )}
                     {isLoading ? (
@@ -66,8 +66,8 @@ const PagePost = () => {
                         <Flex vertical gap={12} align="end">
                             <Typography.Title level={2} style={{margin: 0}}>{data?.price} ₽</Typography.Title>
                             <Flex vertical align="end">
-                                <Typography.Text style={{color: "#848388", display: "block"}}>Опубликовано: {createDate(data?.createdAt)}</Typography.Text>
-                                <Typography.Text style={{color: "#848388", display: "block"}}>Отредактировано: {createDate(data?.updatedAt)}</Typography.Text>
+                                <Typography.Text style={{color: "#848388", display: "block"}}>Опубликовано: {createDate(data?.createdAt!)}</Typography.Text>
+                                <Typography.Text style={{color: "#848388", display: "block"}}>Отредактировано: {createDate(data?.updatedAt!)}</Typography.Text>
                             </Flex>
                         </Flex>
                 )}
@@ -96,9 +96,9 @@ const PagePost = () => {
                             {data?.needsRevision && (
                               <MissingSpecsCard missingSpecs={missingSpecs} />
                             )}
-                            <Flex vertical gap={16}>
-                                <Typography.Title level={3} style={{margin: 0}}>Характеристики</Typography.Title>
-                                <ItemSpecs category={data?.category!} params={data?.params!} setMissingSpecs={setMissingSpecs} />
+                            <Flex vertical>
+                                <Typography.Title level={3} style={{marginBottom: 16}}>Характеристики</Typography.Title>
+                                <ItemSpecs category={data?.category!} params={data?.params!} />
                             </Flex>
                         </Flex>
                     </Flex> 

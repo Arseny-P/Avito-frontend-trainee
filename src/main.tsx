@@ -11,6 +11,7 @@ import { ConfigProvider, Spin } from 'antd';
 import PagePost from './pages/PagePost.tsx';
 import { PersistGate } from 'redux-persist/integration/react';
 import { LoadingOutlined } from '@ant-design/icons';
+import PageEdit from './pages/PageEdit.tsx';
 
 const queryClient = new QueryClient();
 
@@ -40,6 +41,7 @@ createRoot(document.getElementById('root')!).render(
               <Route index element={<Navigate to="/ads" replace />} />
               <Route path="ads" element={<PagePostsList />}/>
               <Route path='/ads/:id' element={<PagePost />} />
+              <Route path='/ads/:id/edit' element={<PageEdit />} />
               <Route path="*" element={<Navigate to="/ads" replace />} />
             </Route>
           </Routes>
