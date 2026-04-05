@@ -11,8 +11,10 @@ import { descPromt, pricePrompt } from "../services/ollama/basePromt";
 import { getMainInfo } from "../modules/UI/ItemSpecs/getMainInfo";
 import { useAskOllama } from "../services/hooks/useOllama";
 import ButtonPopover from "../modules/UI/Popover/ButtonPopover";
+import { useAppColors } from "../services/hooks/useAppColors";
 
 const PageEdit = () => {
+  const {textGold, bgGold, textNeutral, bgNeutral} = useAppColors();
   const navigate = useNavigate();
   const { id } = useParams();
   const {data, isLoading, isError, error } = useGetSinglePost(id!);
@@ -141,6 +143,7 @@ const PageEdit = () => {
       {contextHolder}
       <Flex vertical gap={18} style={{padding: 32}}>
         <Typography.Title level={2} style={{margin: 0, padding: 0}}>Редактирование объявления</Typography.Title>
+        <Button styles={{root: {background: bgNeutral, color: textNeutral, width: "fit-content" }}} onClick={handleCancel}>Отменить</Button>
 
         {/* ======================= Category ======================= */}
         <Flex vertical gap={8}>
@@ -187,7 +190,7 @@ const PageEdit = () => {
               }
             </Flex>
             <ButtonPopover isPending={isOllamaPending} isError={isOllamaError} data={ollamaData ? ollamaData.split('@')[1] : ""} applyHandler={() => { if (ollamaData)  handleInput("price", ollamaData.split('@')[0].trim()); }}>
-              <Button loading={isOllamaPending} icon={ollamaData ? <ReloadOutlined /> : <BulbOutlined />} variant="filled" style={{width: "fit-content", border: "none", color: "#d48806", backgroundColor: "#fdf2e9"}} onClick={() => handleAskOllama(pricePrompt(getMainInfo(newData), true))}>
+              <Button loading={isOllamaPending} icon={ollamaData ? <ReloadOutlined /> : <BulbOutlined />} variant="filled" style={{width: "fit-content", border: "none", color: textGold, backgroundColor: bgGold}} onClick={() => handleAskOllama(pricePrompt(getMainInfo(newData), true))}>
                 {isOllamaPending ? "Выполняется запрос" : (
                   ollamaData || isOllamaError ? "Повторить запрос" : "Узнать рыночную цену"
                 )}
@@ -213,7 +216,7 @@ const PageEdit = () => {
           <Typography.Title level={4} style={{display: "inline", margin: 0, padding: 0}}>Описание</Typography.Title>
             <Input.TextArea status={newData.description ? "" : "warning"} placeholder="Описание товара" showCount maxLength={1000} value={newData.description} onChange={(newValue) => handleInput("description", newValue.target.value)} style={{width: 942}} autoSize={{ minRows: 2, maxRows: 6 }} allowClear={true}/>
             <ButtonPopover isPending={isOllamaPending} isError={isOllamaError} oldData={newData.description || ""} data={ollamaData || ""} applyHandler={() => {handleInput("description", ollamaData!)}} withCompare={true}>
-              <Button loading={isOllamaPending} icon={ollamaData ? <ReloadOutlined /> : <BulbOutlined />} variant="filled" style={{width: "fit-content", border: "none", color: "#d48806", backgroundColor: "#fdf2e9"}} onClick={() => handleAskOllama(descPromt(getMainInfo(newData)))}>
+              <Button loading={isOllamaPending} icon={ollamaData ? <ReloadOutlined /> : <BulbOutlined />} variant="filled" style={{width: "fit-content", border: "none", color: textGold, backgroundColor: bgGold}} onClick={() => handleAskOllama(descPromt(getMainInfo(newData)))}>
                 {isOllamaPending ? "Выполняется запрос" : (
                   ollamaData || isOllamaError ? "Повторить запрос" : (
                     newData.description ? "Улучшить описание" : "Придумать описание"
@@ -226,7 +229,7 @@ const PageEdit = () => {
         {/* ======================= Buttons ======================= */}
         <Flex gap={10}>
           <Button loading={isSaving} type="primary" disabled={!newData.title || !newData.price } onClick={handleSave}>Сохранить</Button>
-          <Button styles={{root: {background: "#D9D9D9", color: "#5A5A5A" }}} onClick={handleCancel}>Отменить</Button>
+          <Button styles={{root: {background: bgNeutral, color: textNeutral }}} onClick={handleCancel}>Отменить</Button>
         </Flex>
       </Flex>
     </>

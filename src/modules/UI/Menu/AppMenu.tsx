@@ -2,9 +2,11 @@ import type { MenuProps } from 'antd';
 import { Button, Checkbox, Divider, Flex, Menu, Switch, Typography } from 'antd';
 import { useAppDispatch, useAppSelector } from '../../../store';
 import { PostListSlice } from '../PostsList/PostList.slice';
+import { useAppColors } from '../../../services/hooks/useAppColors';
 
 type MenuItem = Required<MenuProps>['items'][number];
 const AppMenu = () => {
+    const {bg} = useAppColors();
     const selectedCategories = useAppSelector((state) => PostListSlice.selectors.getCategories(state));
     const dispatch = useAppDispatch();
     const toggleRevisions = (checked: boolean) => {
@@ -50,7 +52,7 @@ const AppMenu = () => {
   return (
     <>
         <Flex vertical style={{gap: 10}}>
-          <Flex vertical style={{ backgroundColor: '#fff', borderRadius: 16, padding: 16}}>
+          <Flex vertical style={{ backgroundColor: bg, borderRadius: 16, padding: 16}}>
             <Typography.Title level={4} style={{margin: 0}}>Фильтры</Typography.Title>
             <Menu items={ items } mode="inline" style={{border: "none"}}></Menu>
             <Divider style={{ margin: 0 }} />

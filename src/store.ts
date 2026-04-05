@@ -4,16 +4,18 @@ import { PostListSlice } from "./modules/UI/PostsList/PostList.slice";
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
 import { ItemSpecsSLice } from "./modules/UI/ItemSpecs/ItemSpecs.slice";
+import { ColorModeSlice } from "./modules/ColorMode/ColorMode.slice";
 
 const rootReducer = combineReducers({
   [PostListSlice.name]: PostListSlice.reducer,
   [ItemSpecsSLice.name]: ItemSpecsSLice.reducer,
+  [ColorModeSlice.name]: ColorModeSlice.reducer
 });
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['postList', 'itemSpecs'],
+  whitelist: ['postList', 'itemSpecs', "colorMode"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

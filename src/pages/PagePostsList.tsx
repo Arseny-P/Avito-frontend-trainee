@@ -10,6 +10,7 @@ import { AppstoreOutlined, BarsOutlined, LoadingOutlined } from "@ant-design/ico
 import type { AxiosError } from "axios";
 import { PostListSlice } from "../modules/UI/PostsList/PostList.slice";
 import { shallowEqual } from "react-redux";
+import { useAppColors } from "../services/hooks/useAppColors";
 
 const PagePostsList = () => {
   const { 
@@ -30,6 +31,7 @@ const PagePostsList = () => {
   vision: PostListSlice.selectors.getVision(state),
 }), shallowEqual);
 
+  const {neutral, bg} = useAppColors();
   const dispatch = useAppDispatch();
 
   let params: FilterType = {
@@ -67,14 +69,14 @@ const PagePostsList = () => {
   const axiosError = error as AxiosError<{ message: string }>;
   return (
     <>
-      <Layout style={{ minHeight: '100vh', background: '#F7F5F8', padding: '12px 32px'}}>
+      <Layout style={{ minHeight: '100vh', background: neutral, padding: '12px 32px'}}>
         <Header  style={{
           display: 'flex',
           gap: 16,
           flexDirection: 'column',
           alignItems: 'flex-start',
           height: "100%",
-          background: '#F7F5F8', 
+          background: neutral, 
           padding: '0 24px',
         }}>
           
@@ -97,14 +99,14 @@ const PagePostsList = () => {
           <Flex style={{
             alignItems: 'center',
             padding: "12px",
-            backgroundColor: "#fff",
             borderRadius: "8px",
             width: "100%",
             gap: 24,
+            backgroundColor: bg
           }}>
             <Input.Search placeholder="Найти объявление..." variant="filled" onSearch={onSearch}/>
             <Flex style={{alignItems: 'center', gap: 16}}>
-              <Segmented onChange={onSetVision} defaultValue={vision}
+              <Segmented onChange={onSetVision} style={{backgroundColor: neutral}} defaultValue={vision}
                 options={[
                   { value: 'table', icon: <AppstoreOutlined /> },
                   { value: 'list', icon: <BarsOutlined /> },
@@ -126,21 +128,20 @@ const PagePostsList = () => {
           </Flex>
         </Header>
 
-        <Layout style={{padding: '12px 32px'}}>
+        <Layout style={{padding: '12px 32px', backgroundColor: neutral}}>
           <Sider 
             width={250} 
-            theme="light"
             style={{
               display: 'flex',
               flexDirection: 'column',
-              backgroundColor: '#F7F5F8',
+              backgroundColor: neutral,
             }} 
           >
             <AppMenu />
           </Sider>
 
           <Content style={{
-            padding: 24,
+            paddingLeft: 24,
             display: 'flex',
             flexDirection: 'column',
             gap: 10}}>

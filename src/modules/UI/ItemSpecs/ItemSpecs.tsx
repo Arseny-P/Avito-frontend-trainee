@@ -66,13 +66,13 @@ const ItemSpecs = ({ category, params}: specsProps) => {
   }, [exisitingSpecs, missingNames, dispatch]);
 
   if(specsList.length === 0) {
-    return <Typography.Text style={{ color: "rgba(0, 0, 0, 0.45)" }} strong>Отсутствуют</Typography.Text>;
+    return <Typography.Text strong>Отсутствуют</Typography.Text>;
   }
   return (
     <>
       {specsList.map((spec, index) => (
         <Flex key={index} gap={12} style={{marginBottom: 8}}>
-          <Typography.Text style={{ width: 148, color: "rgba(0, 0, 0, 0.45)"}} strong>{spec.label}</Typography.Text>
+          <Typography.Text style={{ width: 148 }} strong>{spec.label}</Typography.Text>
           <Typography.Text>{spec.label}</Typography.Text>
         </Flex>
       ))}

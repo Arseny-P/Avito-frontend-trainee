@@ -7,10 +7,11 @@ import ItemSpecs from '../modules/UI/ItemSpecs/ItemSpecs';
 import MissingSpecsCard from '../modules/UI/MissingSpecsCard/MissingSpecsCard';
 import { useAppSelector } from '../store';
 import { ItemSpecsSLice } from '../modules/UI/ItemSpecs/ItemSpecs.slice';
+import { useAppColors } from '../services/hooks/useAppColors';
 
 const PagePost = () => {
   const missingSpecs = useAppSelector((state) => ItemSpecsSLice.selectors.getMissingSpecsName(state));
-
+  const {bgPlaceholder} = useAppColors();
   const createDate = (date: string) => {
      return new Date( Date.parse(date) ).toLocaleString('ru-RU', {
         day: 'numeric',
@@ -38,9 +39,9 @@ const PagePost = () => {
   
   return (
    <>
-    <Layout style={{ minHeight: '100vh', background: '#fff', padding: 32}}>
-        <Header style={{margin: 0, padding: 0, background: '#fff', height: "auto"}}>
-            <Flex vertical align='start'>
+    <Layout style={{ minHeight: '100vh', padding: 32, background: "none"}}>
+        <Header style={{margin: 0, padding: 0, background: "none", height: "auto"}}>
+            <Flex vertical align='start' style={{background: "none"}}>
                 <Button type="link" onClick={() => navigate("/ads")}>← Назад</Button>
                 <Flex style={{width: "100%"}} justify="space-between">
                     {isLoading ? (
@@ -84,7 +85,7 @@ const PagePost = () => {
                         <div style={{   
                             width: 480, 
                             aspectRatio: '4 / 3',
-                            backgroundColor: '#FAFAFA', 
+                            backgroundColor: bgPlaceholder, 
                             display: 'flex', 
                             justifyContent: 'center', 
                             alignItems: 'center',
