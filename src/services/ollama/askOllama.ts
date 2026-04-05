@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { OLLAMA_API_URL, OLLAMA_MODEL } from "./options";
 
-export const askOllama = async (prompt: string): Promise<string> => {
+export const askOllama = async (prompt: string, signal?: AbortSignal): Promise<string> => {
   try {
     const response = await axios.post(OLLAMA_API_URL, {
       model: OLLAMA_MODEL,
@@ -16,6 +16,8 @@ export const askOllama = async (prompt: string): Promise<string> => {
       options: {
         temperature: 0.5
       }
+    }, {
+      signal
     });
 
     if(!response.data?.message?.content){

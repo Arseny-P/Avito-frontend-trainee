@@ -4,6 +4,6 @@ import { postsApi } from "../api/postsApi";
 export function useGetSinglePost(id: string) {
     return useQuery({
         queryKey: ["posts", id],
-        queryFn: () => postsApi.getSinglePost(id),
+        queryFn: ({ signal }) => postsApi.getSinglePost(id, signal),
     })
 }

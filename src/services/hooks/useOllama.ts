@@ -1,10 +1,9 @@
-// services/hooks/useOllama.ts
 import { useMutation } from '@tanstack/react-query';
-import { askOllama } from '../ollama/askOllama'; // Импортируем функцию из шага 1
+import { askOllama } from '../ollama/askOllama';
 
 export const useAskOllama = () => {
   return useMutation({
-    mutationFn: (prompt: string) => askOllama(prompt),
+    mutationFn: ({prompt, signal}:{prompt: string, signal?: AbortSignal}) => askOllama(prompt, signal),
     
     onError: (error) => {
       console.error("Ошибка генерации:", error.message);

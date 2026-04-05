@@ -5,6 +5,6 @@ import type { FilterType } from "../types/FilterType.type";
 export function useGetPosts(params: FilterType) {
     return useQuery({
         queryKey: ["posts", params],
-        queryFn: () => postsApi.getPosts(params),
+        queryFn: ({signal}) => postsApi.getPosts(params, signal),
     })
 }

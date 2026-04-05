@@ -25,12 +25,12 @@ const buildQueryParams = (filters: FilterType): string => {
 };
 
 export const postsApi = {
-    getPosts: async (params: FilterType) => {
-        const { data } : {data: ItemsGetOut} = await api.get("/items", { params: params, paramsSerializer: { serialize: buildQueryParams } });
+    getPosts: async (params: FilterType, signal: AbortSignal) => {
+        const { data } : {data: ItemsGetOut} = await api.get("/items", { params: params, signal, paramsSerializer: { serialize: buildQueryParams } });
         return data;
     },
-    getSinglePost: async(id: string) => {
-        const { data } : {data: SingleItemGetOut} = await api.get(`/items/${id}`);
+    getSinglePost: async(id: string, signal: AbortSignal) => {
+        const { data } : {data: SingleItemGetOut} = await api.get(`/items/${id}`, {signal});
         return data;
     }
 }

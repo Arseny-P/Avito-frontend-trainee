@@ -3,7 +3,7 @@ import { useGetSinglePost } from "../services/hooks/useSinglePost";
 import { Button, Divider, Flex, Input, notification, Result, Select, Spin, Typography } from "antd";
 import type { SingleItemGetOut } from "../services/types/SinglePost.type";
 import ItemSpecsInputs from "../modules/UI/ItemSpecs/ItemSpecsInputs";
-import { useEffect, useState} from "react";
+import { useEffect, useRef, useState} from "react";
 import { AxiosError } from "axios";
 import { BulbOutlined, LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
 import { api } from "../services/api/api";
@@ -15,6 +15,7 @@ import { useAppColors } from "../services/hooks/useAppColors";
 
 const PageEdit = () => {
   const {textGold, bgGold, textNeutral, bgNeutral} = useAppColors();
+  const abortControllerRef = useRef<AbortController | null>(null);
   const navigate = useNavigate();
   const { id } = useParams();
   const {data, isLoading, isError, error } = useGetSinglePost(id!);
@@ -47,6 +48,7 @@ const PageEdit = () => {
     if (data) {
       setNewData(JSON.parse(data));
     }
+    return abortControllerRef.current?.abort();
   }, [])
 
   useEffect(() => {
@@ -128,7 +130,7 @@ const PageEdit = () => {
   
   const handleAskOllama = async (question: string) => {
     if (!newData || isOllamaPending) return;
-    generateText(question);
+    generateText({prompt: question, signal: abortControllerRef.current?.signal});
   }
 
   if(isLoading || !newData) return (
