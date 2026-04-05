@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const ColorModeSlice = createSlice({
   name: "colorMode",
   initialState: {
-    isDark: true,
+    isDark: false,
   },
   selectors: {
     isDark: (state) => state.isDark,

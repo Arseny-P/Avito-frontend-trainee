@@ -1,73 +1,53 @@
-# React + TypeScript + Vite
+# Тестовое задание для стажёра Frontend Avito
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Задача
 
-Currently, two official plugins are available:
+Разработать веб-приложение — личный кабинет продавца с интегрированным AI-ассистентом, который помогает улучшать описания объявлений. Продавец видит список своих объявлений, выбирает нужное и может просмотреть карточку товара, перейти к редактированию и запросить рекомендации от нейросети. Сервис анализирует содержимое карточки товара и предлагает улучшения текста.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Использованые технологии
 
-## React Compiler
+- React
+- TypeScript
+- UI-библиотека: Ant Design
+- Стейт-менеджер: Redux
+- Форматер: Prettier
+- Система сборки: Vite
+- Для HTTP-запросов: TanStack Query, Axios
+- LLM модель: llama3
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Что было реализовано?
 
-## Expanding the ESLint configuration
+Помимо основных функциональных возможностей были дополнительно реализовано:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Визуальное сравнение «Было → Стало» в описании через подстветку добавленного/удаленного текста в предложенном LLM варианте
+- Тёмная тема с сохранением выбора в localStorage
+- Прерывание запросов при переходе между страницами через AbortController
+- Выбор лейаута сетка/список на странице списка объявлений
 
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+Также вне требований:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- Дополнительная сортировка по цене
+- Дополнительные кнопки "Назад" и "Отмена" на страницах объвяления и редактирования объявления для удобства пользователей
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+## Установка и запуск
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1. Установите [Ollama](https://ollama.com/)
+2. Загрузите модель:
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+   ```bash
+   ollama pull llama3
+   ```
 
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+3. Убедитесь, что Ollama запущена:
+
+   ```bash
+   ollama serve
+   ```
+
+4. Находясь в папке с проектом выполните:
+
+   ```bash
+   npm run start-app
+   ```
+
+После этого приложение будет доступно по адресу: <http://localhost:4173>
