@@ -1,4 +1,4 @@
-import type { MenuProps } from "antd";
+import type { CheckboxChangeEvent, MenuProps } from "antd";
 import {
   Button,
   Checkbox,
@@ -23,7 +23,7 @@ const AppMenu = () => {
     dispatch(PostListSlice.actions.setNeedsRevision(checked));
   };
 
-  const checkCategory = (e) => {
+  const checkCategory = (e: CheckboxChangeEvent) => {
     if (e.target.checked) {
       dispatch(PostListSlice.actions.setCategory(e.target.value));
     } else {

@@ -63,7 +63,7 @@ const ItemSpecs = ({ category, params }: specsProps) => {
     })) as specType[];
 
     const present = allCategorySpecs.filter(
-      ({ key, label, value }) => value !== undefined,
+      ({ value }) => value !== undefined,
     );
     return {
       specsList: present,

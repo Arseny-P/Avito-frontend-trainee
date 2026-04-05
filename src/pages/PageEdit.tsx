@@ -128,7 +128,7 @@ const PageEdit = () => {
     setNewData((prev) => {
       if (!prev) return null;
       if (key === "category") {
-        return { ...prev, category: value as string };
+        return { ...prev, category: value as string } as SingleItemGetOut;
       }
       return {
         ...prev,
@@ -136,7 +136,7 @@ const PageEdit = () => {
           ...(prev.params as any),
           [key]: value,
         },
-      };
+      } as SingleItemGetOut;
     });
   };
 
