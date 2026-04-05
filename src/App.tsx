@@ -1,5 +1,5 @@
-import { Outlet } from "react-router"
-import ThemeToggle from "./modules/UI/ThemeToggle/ThemeToggle"
+import { Outlet } from "react-router";
+import ThemeToggle from "./modules/UI/ThemeToggle/ThemeToggle";
 
 function App() {
   return (
@@ -7,7 +7,7 @@ function App() {
       <ThemeToggle />
       <Outlet />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

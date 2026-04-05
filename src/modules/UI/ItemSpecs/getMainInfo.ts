@@ -4,20 +4,24 @@ export const getMainInfo = (item: SingleItemGetOut): string => {
   const { category, params, ...other } = item;
 
   switch (category) {
-    case 'auto':
+    case "auto":
       return [
         Object.entries(other),
         params.brand,
         params.model,
         params.yearOfManufacture ? `${params.yearOfManufacture} г.` : null,
-        params.transmission === 'automatic' ? 'АКПП' : params.transmission === 'manual' ? 'МКПП' : null,
+        params.transmission === "automatic"
+          ? "АКПП"
+          : params.transmission === "manual"
+            ? "МКПП"
+            : null,
         params.mileage ? `${params.mileage.toLocaleString()} км` : null,
       ]
         .filter(Boolean)
-        .join(', ');
+        .join(", ");
 
-    case 'real_estate':
-      const typeMap = { flat: 'Квартира', house: 'Дом', room: 'Комната' };
+    case "real_estate":
+      const typeMap = { flat: "Квартира", house: "Дом", room: "Комната" };
       return [
         Object.entries(other),
         params.type ? typeMap[params.type] : null,
@@ -26,10 +30,10 @@ export const getMainInfo = (item: SingleItemGetOut): string => {
         params.address,
       ]
         .filter(Boolean)
-        .join(', ');
+        .join(", ");
 
-    case 'electronics':
-      const conditionMap = { new: 'новый', used: 'б/у' };
+    case "electronics":
+      const conditionMap = { new: "новый", used: "б/у" };
       return [
         Object.entries(other),
         params.brand,
@@ -38,9 +42,9 @@ export const getMainInfo = (item: SingleItemGetOut): string => {
         params.color,
       ]
         .filter(Boolean)
-        .join(', ');
+        .join(", ");
 
     default:
-      return '';
+      return "";
   }
 };

@@ -1,10 +1,10 @@
-import Fastify from 'fastify';
+import Fastify from "fastify";
 
-import items from 'data/items.json' with { type: 'json' };
-import { Item } from 'src/types.ts';
-import { ItemsGetInQuerySchema, ItemUpdateInSchema } from 'src/validation.ts';
-import { treeifyError, ZodError } from 'zod';
-import { doesItemNeedRevision } from './src/utils.ts';
+import items from "data/items.json" with { type: "json" };
+import { Item } from "src/types.ts";
+import { ItemsGetInQuerySchema, ItemUpdateInSchema } from "src/validation.ts";
+import { treeifyError, ZodError } from "zod";
+import { doesItemNeedRevision } from "./src/utils.ts";
 
 const ITEMS = items as Item[];
 
@@ -12,18 +12,18 @@ const fastify = Fastify({
   logger: true,
 });
 
-await fastify.register((await import('@fastify/middie')).default);
+await fastify.register((await import("@fastify/middie")).default);
 
 // Искуственная задержка ответов, чтобы можно было протестировать состояния загрузки
 fastify.use((_, __, next) =>
-  new Promise(res => setTimeout(res, 300 + Math.random() * 700)).then(next),
+  new Promise((res) => setTimeout(res, 300 + Math.random() * 700)).then(next),
 );
 
 // Настройка CORS
-await fastify.register((await import('@fastify/cors')).default, {
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+await fastify.register((await import("@fastify/cors")).default, {
+  origin: "*",
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 });
 
 interface ItemGetRequest extends Fastify.RequestGenericInterface {
@@ -32,17 +32,17 @@ interface ItemGetRequest extends Fastify.RequestGenericInterface {
   };
 }
 
-fastify.get<ItemGetRequest>('/items/:id', (request, reply) => {
+fastify.get<ItemGetRequest>("/items/:id", (request, reply) => {
   const itemId = Number(request.params.id);
 
   if (!Number.isFinite(itemId)) {
     reply
       .status(400)
-      .send({ success: false, error: 'Item ID path param should be a number' });
+      .send({ success: false, error: "Item ID path param should be a number" });
     return;
   }
 
-  const item = ITEMS.find(item => item.id === itemId);
+  const item = ITEMS.find((item) => item.id === itemId);
 
   if (!item) {
     reply
@@ -67,7 +67,7 @@ interface ItemsGetRequest extends Fastify.RequestGenericInterface {
   };
 }
 
-fastify.get<ItemsGetRequest>('/items', request => {
+fastify.get<ItemsGetRequest>("/items", (request) => {
   const {
     q,
     limit,
@@ -78,12 +78,12 @@ fastify.get<ItemsGetRequest>('/items', request => {
     sortDirection,
   } = ItemsGetInQuerySchema.parse(request.query);
 
-  const filteredItems = ITEMS.filter(item => {
+  const filteredItems = ITEMS.filter((item) => {
     return (
       item.title.toLowerCase().includes(q.toLowerCase()) &&
       (!needsRevision || doesItemNeedRevision(item)) &&
       (!categories?.length ||
-        categories.some(category => item.category === category))
+        categories.some((category) => item.category === category))
     );
   });
 
@@ -94,20 +94,20 @@ fastify.get<ItemsGetRequest>('/items', request => {
 
         if (!sortDirection) return comparisonValue;
 
-        if (sortColumn === 'title') {
+        if (sortColumn === "title") {
           comparisonValue = item1.title.localeCompare(item2.title);
-        } else if (sortColumn === 'createdAt') {
+        } else if (sortColumn === "createdAt") {
           comparisonValue =
             new Date(item1.createdAt).valueOf() -
             new Date(item2.createdAt).valueOf();
-        } else if (sortColumn === 'price') {
+        } else if (sortColumn === "price") {
           comparisonValue = (item1.price ?? 0) - (item2.price ?? 0);
         }
 
-        return (sortDirection === 'desc' ? -1 : 1) * comparisonValue;
+        return (sortDirection === "desc" ? -1 : 1) * comparisonValue;
       })
       .slice(skip, skip + limit)
-      .map(item => ({
+      .map((item) => ({
         id: item.id,
         category: item.category,
         title: item.title,
@@ -124,17 +124,17 @@ interface ItemUpdateRequest extends Fastify.RequestGenericInterface {
   };
 }
 
-fastify.put<ItemUpdateRequest>('/items/:id', (request, reply) => {
+fastify.put<ItemUpdateRequest>("/items/:id", (request, reply) => {
   const itemId = Number(request.params.id);
 
   if (!Number.isFinite(itemId)) {
     reply
       .status(400)
-      .send({ success: false, error: 'Item ID path param should be a number' });
+      .send({ success: false, error: "Item ID path param should be a number" });
     return;
   }
 
-  const itemIndex = ITEMS.findIndex(item => item.id === itemId);
+  const itemIndex = ITEMS.findIndex((item) => item.id === itemId);
 
   if (itemIndex === -1) {
     reply
