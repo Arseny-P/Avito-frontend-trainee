@@ -73,7 +73,7 @@ const ItemSpecs = ({ category, params}: specsProps) => {
       {specsList.map((spec, index) => (
         <Flex key={index} gap={12} style={{marginBottom: 8}}>
           <Typography.Text style={{ width: 148, color: "rgba(0, 0, 0, 0.45)"}} strong>{spec.label}</Typography.Text>
-          <Typography.Text>{spec.value}</Typography.Text>
+          <Typography.Text>{spec.label}</Typography.Text>
         </Flex>
       ))}
     </>

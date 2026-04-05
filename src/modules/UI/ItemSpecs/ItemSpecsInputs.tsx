@@ -47,7 +47,7 @@ export const ItemSpecsInputs = ({ category, params, onSelect }: ItemSpecsInputsP
     <>
       {specsList.map((spec, index) => (
         <Flex vertical key={spec.key + index} gap={8}>
-          <Typography.Text style={{color: "rgba(0, 0, 0, 0.85)"}}>{spec.label}</Typography.Text>
+          <Typography.Text>{spec.label}</Typography.Text>
           { Object.keys(selectorsOptions).includes(spec.key) ? (
                 <Select status={spec.value ? "" : "warning"} placeholder={spec.label} value={spec.value} style={{width: 456}} allowClear={true} options={selectorsOptions[spec.key]} onChange={(newValue) => onSelect(spec.key, newValue)}/>
             ) : (

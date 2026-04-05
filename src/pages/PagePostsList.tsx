@@ -30,13 +30,12 @@ const PagePostsList = () => {
   vision: PostListSlice.selectors.getVision(state),
 }), shallowEqual);
 
-  const postPerPage = vision === "list" ? 4 : 10;
   const dispatch = useAppDispatch();
 
   let params: FilterType = {
     q: searchValue,
-    skip: ((page === 0 ? 1 : page) - 1) * postPerPage,
-    limit: postPerPage,
+    skip: ((page === 0 ? 1 : page) - 1) * 10,
+    limit: 10,
     categories: categories,
     needsRevision: needsRevision,
     sortColumn: sortColumn,
@@ -160,7 +159,7 @@ const PagePostsList = () => {
               ) : (posts?.items &&  
               <>
                 <PostsList posts={posts?.items}/>
-                <Pagination total={posts?.total} defaultCurrent={1} current={page} pageSize={postPerPage} onChange={onChange}/>
+                <Pagination total={posts?.total} defaultCurrent={1} current={page} pageSize={10} onChange={onChange}/>
               </>
             )}            
           </Content>

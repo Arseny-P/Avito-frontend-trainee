@@ -5,9 +5,12 @@ import type { SingleItemGetOut } from "../services/types/SinglePost.type";
 import ItemSpecsInputs from "../modules/UI/ItemSpecs/ItemSpecsInputs";
 import { useEffect, useState} from "react";
 import { AxiosError } from "axios";
-import { LoadingOutlined } from "@ant-design/icons";
+import { BulbOutlined, LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
 import { api } from "../services/api/api";
-
+import { descPromt, pricePrompt } from "../services/ollama/basePromt";
+import { getMainInfo } from "../modules/UI/ItemSpecs/getMainInfo";
+import { useAskOllama } from "../services/hooks/useOllama";
+import ButtonPopover from "../modules/UI/Popover/ButtonPopover";
 
 const PageEdit = () => {
   const navigate = useNavigate();
@@ -16,8 +19,9 @@ const PageEdit = () => {
   const axiosError = error as AxiosError<{ message: string }>;
   const [newData, setNewData] = useState<SingleItemGetOut | null>(null);
   const [isSaving, setIsSaving] = useState(false);
-  const [noticeApi, contextHolder] = notification.useNotification();
+  const { mutate: generateText, isPending: isOllamaPending, isError: isOllamaError, data: ollamaData } = useAskOllama();
 
+  const [noticeApi, contextHolder] = notification.useNotification();
   const openNotification = (result: string) => {
     if(result === 'success') {
       noticeApi.success({
@@ -59,13 +63,25 @@ const PageEdit = () => {
     try {
       const {id, needsRevision, createdAt, updatedAt, ...toUpdate} = newData!;
       if(toUpdate.category === "auto") {
-        toUpdate.params.yearOfManufacture = Number(toUpdate.params.yearOfManufacture);
-        toUpdate.params.enginePower = Number(toUpdate.params.enginePower);
-        toUpdate.params.mileage = Number(toUpdate.params.mileage);
+        const { yearOfManufacture, enginePower, mileage} = toUpdate.params;
+        if(Number(yearOfManufacture)) {
+          toUpdate.params.yearOfManufacture = Number(yearOfManufacture);
+        }
+        if(Number(enginePower)) {
+          toUpdate.params.enginePower = Number(enginePower);
+        }
+        if(Number(mileage)) {
+          toUpdate.params.mileage = Number(mileage);
+        }
       }
       if(toUpdate.category === "real_estate") {
-        toUpdate.params.area = Number(toUpdate.params.area);
-        toUpdate.params.floor = Number(toUpdate.params.floor);
+        const {area, floor} = toUpdate.params;
+        if(Number(area)){
+          toUpdate.params.area = Number(area);
+        }
+        if(Number(floor)){
+          toUpdate.params.floor = Number(floor);
+        }
       }
       const response = await api.put(`/items/${id}`, {...toUpdate, "price": Number(toUpdate.price)});
       console.log(response);
@@ -79,7 +95,7 @@ const PageEdit = () => {
   }
 
   const handleCancel = () => {
-    navigate(-1);
+    navigate(`/ads/${id}`);
   }
 
   const handleSelect = (key: string, value: string | number | undefined) => {
@@ -108,6 +124,11 @@ const PageEdit = () => {
     });
   }
   
+  const handleAskOllama = async (question: string) => {
+    if (!newData || isOllamaPending) return;
+    generateText(question);
+  }
+
   if(isLoading || !newData) return (
     <Spin style={{width: '100dvw', height: '100dvh', display: 'flex', justifyContent: 'center', alignItems: 'center'}} indicator={<LoadingOutlined style={{ fontSize: 48 }} spin />} />
   )
@@ -121,6 +142,7 @@ const PageEdit = () => {
       <Flex vertical gap={18} style={{padding: 32}}>
         <Typography.Title level={2} style={{margin: 0, padding: 0}}>Редактирование объявления</Typography.Title>
 
+        {/* ======================= Category ======================= */}
         <Flex vertical gap={8}>
           <Typography.Title level={4} style={{margin: 0, padding: 0}}>Категория</Typography.Title>
           <Select
@@ -130,13 +152,14 @@ const PageEdit = () => {
             { value: 'electronics', label: 'Электроника' },
             { value: 'real_estate', label: 'Недвижимость' },
             ]} 
-            style={{width: 256}}
+            styles={{root: {width: 256}}}
             onChange={(newValue) => handleSelect("category", newValue)}
             />
         </Flex>
 
         <Divider style={{margin: 0, padding: 0}}/>
 
+        {/* ======================= Title ======================= */}
         <Flex vertical gap={8}>
           <Flex gap={8} align="center">
             <span style={{color: "#FF4D4F"}}>*</span>
@@ -150,6 +173,7 @@ const PageEdit = () => {
 
         <Divider style={{margin: 0, padding: 0}}/>
 
+        {/* ======================= Price ======================= */}
         <Flex vertical gap={8}>
           <Flex gap={8} align="center">
             <span style={{color: "#FF4D4F"}}>*</span>
@@ -162,13 +186,19 @@ const PageEdit = () => {
                 <Typography.Text style={{color: "#FF4D4F"}}>Цена должна быть заполнена</Typography.Text> 
               }
             </Flex>
-            
-            <Button type="primary">Кнопка с магией</Button>
+            <ButtonPopover isPending={isOllamaPending} isError={isOllamaError} data={ollamaData ? ollamaData.split('@')[1] : ""} applyHandler={() => { if (ollamaData)  handleInput("price", ollamaData.split('@')[0].trim()); }}>
+              <Button loading={isOllamaPending} icon={ollamaData ? <ReloadOutlined /> : <BulbOutlined />} variant="filled" style={{width: "fit-content", border: "none", color: "#d48806", backgroundColor: "#fdf2e9"}} onClick={() => handleAskOllama(pricePrompt(getMainInfo(newData), true))}>
+                {isOllamaPending ? "Выполняется запрос" : (
+                  ollamaData || isOllamaError ? "Повторить запрос" : "Узнать рыночную цену"
+                )}
+              </Button>
+            </ButtonPopover>
           </Flex>
         </Flex>
         
         <Divider style={{margin: 0, padding: 0}}/>
         
+        {/* ======================= Specs ======================= */}
         <Flex vertical gap={8}>
             <Typography.Title level={4} style={{margin: 0, padding: 0}}>Характеристики</Typography.Title>
           <Flex vertical gap={12}>
@@ -178,12 +208,22 @@ const PageEdit = () => {
         
         <Divider style={{margin: 0, padding: 0}}/>
 
+        {/* ======================= Description ======================= */}
         <Flex vertical gap={8}>
           <Typography.Title level={4} style={{display: "inline", margin: 0, padding: 0}}>Описание</Typography.Title>
-            <Input.TextArea status={newData.description ? "" : "warning"} placeholder="Описание товара" showCount maxLength={1000} value={newData.description} onChange={(newValue) => handleInput("description", newValue.target.value)} style={{width: 942}} allowClear={true}/>
-            <Button type="primary" style={{width: "fit-content"}}>Кнопка с магией</Button>
+            <Input.TextArea status={newData.description ? "" : "warning"} placeholder="Описание товара" showCount maxLength={1000} value={newData.description} onChange={(newValue) => handleInput("description", newValue.target.value)} style={{width: 942}} autoSize={{ minRows: 2, maxRows: 6 }} allowClear={true}/>
+            <ButtonPopover isPending={isOllamaPending} isError={isOllamaError} oldData={newData.description || ""} data={ollamaData || ""} applyHandler={() => {handleInput("description", ollamaData!)}} withCompare={true}>
+              <Button loading={isOllamaPending} icon={ollamaData ? <ReloadOutlined /> : <BulbOutlined />} variant="filled" style={{width: "fit-content", border: "none", color: "#d48806", backgroundColor: "#fdf2e9"}} onClick={() => handleAskOllama(descPromt(getMainInfo(newData)))}>
+                {isOllamaPending ? "Выполняется запрос" : (
+                  ollamaData || isOllamaError ? "Повторить запрос" : (
+                    newData.description ? "Улучшить описание" : "Придумать описание"
+                  ) 
+                )}
+              </Button>
+            </ButtonPopover>
         </Flex>
 
+        {/* ======================= Buttons ======================= */}
         <Flex gap={10}>
           <Button loading={isSaving} type="primary" disabled={!newData.title || !newData.price } onClick={handleSave}>Сохранить</Button>
           <Button styles={{root: {background: "#D9D9D9", color: "#5A5A5A" }}} onClick={handleCancel}>Отменить</Button>
