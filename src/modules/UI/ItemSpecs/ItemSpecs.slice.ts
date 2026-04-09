@@ -1,5 +1,5 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import type { specType } from "../../../services/types/SpecType.type";
+import type { specType } from "@/services/types/SpecType.type";
 
 type specsType = {
   existingSpecs: specType[];

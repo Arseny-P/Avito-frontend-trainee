@@ -8,9 +8,9 @@ import {
   Switch,
   Typography,
 } from "antd";
-import { useAppDispatch, useAppSelector } from "../../../store";
-import { PostListSlice } from "../PostsList/PostList.slice";
-import { useAppColors } from "../../../services/hooks/useAppColors";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { PostListSlice } from "@/modules/UI/PostsList/postFilters.slice";
+import { useAppColors } from "@/services/hooks/useAppColors";
 
 type MenuItem = Required<MenuProps>["items"][number];
 const AppMenu = () => {

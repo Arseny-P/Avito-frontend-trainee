@@ -1,10 +1,10 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { PostListSlice } from "./modules/UI/PostsList/PostList.slice";
+import { PostListSlice } from "@/modules/UI/PostsList/postFilters.slice";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/es/storage";
-import { ItemSpecsSLice } from "./modules/UI/ItemSpecs/ItemSpecs.slice";
-import { ColorModeSlice } from "./modules/ColorMode/ColorMode.slice";
+import { ItemSpecsSLice } from "@/modules/UI/ItemSpecs/ItemSpecs.slice";
+import { ColorModeSlice } from "@/modules/ColorMode/ColorMode.slice";
 
 const rootReducer = combineReducers({
   [PostListSlice.name]: PostListSlice.reducer,

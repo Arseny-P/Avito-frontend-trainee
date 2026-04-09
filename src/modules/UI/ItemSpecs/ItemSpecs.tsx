@@ -4,15 +4,15 @@ import type {
   AutoItemParams,
   ElectronicsItemParams,
   RealEstateItemParams,
-} from "../../../services/types/QueryUpdatePost.type";
+} from "@/services/types/QueryUpdatePost.type";
 import {
   autoLabels,
   electronicsLabels,
   realEstateLabels,
 } from "./ItemsParams/ItemSpecsName";
-import { useAppDispatch } from "../../../store";
+import { useAppDispatch } from "@/store";
 import { ItemSpecsSLice } from "./ItemSpecs.slice";
-import type { specType } from "../../../services/types/SpecType.type";
+import type { specType } from "@/services/types/SpecType.type";
 import {
   AutoSpecsKey,
   ElectronicsSpecsKey,

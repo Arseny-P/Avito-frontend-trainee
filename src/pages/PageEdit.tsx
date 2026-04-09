@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router";
-import { useGetSinglePost } from "../services/hooks/useSinglePost";
+import { useGetSinglePost } from "@/services/hooks/useSinglePost";
 import {
   Button,
   Divider,
@@ -11,8 +11,8 @@ import {
   Spin,
   Typography,
 } from "antd";
-import type { SingleItemGetOut } from "../services/types/SinglePost.type";
-import ItemSpecsInputs from "../modules/UI/ItemSpecs/ItemSpecsInputs";
+import type { SingleItemGetOut } from "@/services/types/SinglePost.type";
+import ItemSpecsInputs from "@/modules/UI/ItemSpecs/ItemSpecsInputs";
 import { useEffect, useRef, useState } from "react";
 import { AxiosError } from "axios";
 import {
@@ -20,12 +20,12 @@ import {
   LoadingOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
-import { api } from "../services/api/api";
-import { descPromt, pricePrompt } from "../services/ollama/basePromt";
-import { getMainInfo } from "../modules/UI/ItemSpecs/getMainInfo";
-import { useAskOllama } from "../services/hooks/useOllama";
-import ButtonPopover from "../modules/UI/Popover/ButtonPopover";
-import { useAppColors } from "../services/hooks/useAppColors";
+import { api } from "@/services/api/api";
+import { descPromt, pricePrompt } from "@/services/ollama/basePromt";
+import { getMainInfo } from "@/modules/UI/ItemSpecs/getMainInfo";
+import { useAskOllama } from "@/services/hooks/useOllama";
+import ButtonPopover from "@/modules/UI/Popover/ButtonPopover";
+import { useAppColors } from "@/services/hooks/useAppColors";
 
 const PageEdit = () => {
   const { textGold, bgGold, textNeutral, bgNeutral } = useAppColors();

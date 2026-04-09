@@ -1,4 +1,4 @@
-import type { SingleItemGetOut } from "../../../services/types/SinglePost.type";
+import type { SingleItemGetOut } from "@/services/types/SinglePost.type";
 
 export const getMainInfo = (item: SingleItemGetOut): string => {
   const { category, params, ...other } = item;

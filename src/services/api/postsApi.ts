@@ -1,7 +1,7 @@
 import { api } from "./api";
-import { type ItemsGetOut } from "../types/PostsList.type";
-import type { FilterType } from "../types/FilterType.type";
-import type { SingleItemGetOut } from "../types/SinglePost.type";
+import { type ItemsGetOut } from "@/services/types/PostsList.type";
+import type { FilterType } from "@/services/types/FilterType.type";
+import type { SingleItemGetOut } from "@/services/types/SinglePost.type";
 
 const buildQueryParams = (filters: FilterType): string => {
   const params = new URLSearchParams();

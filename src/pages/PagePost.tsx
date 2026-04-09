@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router";
-import { useGetSinglePost } from "../services/hooks/useSinglePost";
+import { useGetSinglePost } from "@/services/hooks/useSinglePost";
 import {
   Button,
   Divider,
@@ -16,11 +16,11 @@ import {
   LoadingOutlined,
   PictureOutlined,
 } from "@ant-design/icons";
-import ItemSpecs from "../modules/UI/ItemSpecs/ItemSpecs";
-import MissingSpecsCard from "../modules/UI/MissingSpecsCard/MissingSpecsCard";
-import { useAppSelector } from "../store";
-import { ItemSpecsSLice } from "../modules/UI/ItemSpecs/ItemSpecs.slice";
-import { useAppColors } from "../services/hooks/useAppColors";
+import ItemSpecs from "@/modules/UI/ItemSpecs/ItemSpecs";
+import MissingSpecsCard from "@/modules/UI/MissingSpecsCard/MissingSpecsCard";
+import { useAppSelector } from "@/store";
+import { ItemSpecsSLice } from "@/modules/UI/ItemSpecs/ItemSpecs.slice";
+import { useAppColors } from "@/services/hooks/useAppColors";
 
 const PagePost = () => {
   const missingSpecs = useAppSelector((state) =>

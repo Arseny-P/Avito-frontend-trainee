@@ -1,7 +1,7 @@
-import type { PostType } from "../../../services/types/Post.type";
-import { useAppSelector } from "../../../store";
-import Post from "../Post/Post";
-import { PostListSlice } from "./PostList.slice";
+import type { PostType } from "@/services/types/Post.type";
+import { useAppSelector } from "@/store";
+import Post from "@/modules/UI/Post/Post";
+import { PostListSlice } from "./postFilters.slice";
 
 const PostsList = ({ posts }: { posts: PostType[] }) => {
   const getVision = () => {

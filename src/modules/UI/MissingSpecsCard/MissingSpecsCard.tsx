@@ -1,6 +1,6 @@
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { Card, Flex, Typography } from "antd";
-import { useAppColors } from "../../../services/hooks/useAppColors";
+import { useAppColors } from "@/services/hooks/useAppColors";
 
 const MissingSpecsCard = ({ missingSpecs }: { missingSpecs: string[] }) => {
   const { bgGold, textGold } = useAppColors();

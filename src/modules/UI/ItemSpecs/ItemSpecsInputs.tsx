@@ -1,5 +1,5 @@
 import { Flex, Input, Select, Typography } from "antd";
-import type { specType } from "../../../services/types/SpecType.type";
+import type { specType } from "@/services/types/SpecType.type";
 import {
   autoOptions,
   electronicsOptions,

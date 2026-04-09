@@ -4,18 +4,18 @@ import App from "./App.tsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider } from "react-redux";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { store, persistor, useAppSelector } from "./store.ts";
+import { store, persistor, useAppSelector } from "@/store.ts";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
-import PagePostsList from "./pages/PagePostsList.tsx";
+import PagePostsList from "@/pages/PagePostsList.tsx";
 import { ConfigProvider, Spin } from "antd";
 import { StyleProvider } from "@ant-design/cssinjs";
-import PagePost from "./pages/PagePost.tsx";
+import PagePost from "@/pages/PagePost.tsx";
 import { PersistGate } from "redux-persist/integration/react";
 import { LoadingOutlined } from "@ant-design/icons";
-import PageEdit from "./pages/PageEdit.tsx";
+import PageEdit from "@/pages/PageEdit.tsx";
 import { theme } from "antd";
-import { ThemeSync } from "./modules/ColorMode/ThemeSync.tsx";
-import { ColorModeSlice } from "./modules/ColorMode/ColorMode.slice.ts";
+import { ThemeSync } from "@/modules/ColorMode/ThemeSync.tsx";
+import { ColorModeSlice } from "@/modules/ColorMode/ColorMode.slice.ts";
 
 const queryClient = new QueryClient();
 const AppConfig = () => {

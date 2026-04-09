@@ -26,7 +26,7 @@ import {
   LoadingOutlined,
 } from "@ant-design/icons";
 import type { AxiosError } from "axios";
-import { PostListSlice } from "../modules/UI/PostsList/PostList.slice";
+import { PostListSlice } from "../modules/UI/PostsList/postFilters.slice";
 import { shallowEqual } from "react-redux";
 import { useAppColors } from "../services/hooks/useAppColors";
 

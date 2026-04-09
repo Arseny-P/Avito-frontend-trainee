@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { theme } from "antd";
-import { useAppColors } from "../../services/hooks/useAppColors";
+import { useAppColors } from "@/services/hooks/useAppColors";
 
 export const ThemeSync = () => {
   const { token } = theme.useToken();

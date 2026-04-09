@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { postsApi } from "../api/postsApi";
-import type { FilterType } from "../types/FilterType.type";
+import { postsApi } from "@/services/api/postsApi";
+import type { FilterType } from "@/services/types/FilterType.type";
 
 export function useGetPosts(params: FilterType) {
   return useQuery({

@@ -1,5 +1,5 @@
-import { useAppSelector } from "../../store";
-import { ColorModeSlice } from "../../modules/ColorMode/ColorMode.slice";
+import { useAppSelector } from "@/store";
+import { ColorModeSlice } from "@/modules/ColorMode/ColorMode.slice";
 
 export const useAppColors = () => {
   const isDark = useAppSelector((state) =>

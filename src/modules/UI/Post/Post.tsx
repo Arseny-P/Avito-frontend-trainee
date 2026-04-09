@@ -1,10 +1,10 @@
-import type { PostType } from "../../../services/types/Post.type";
+import type { PostType } from "@/services/types/Post.type";
 import { Card, Flex, Tag, Typography } from "antd";
 import { PictureOutlined } from "@ant-design/icons";
 import { Link } from "react-router";
-import { PostListSlice } from "../PostsList/PostList.slice";
-import { useAppSelector } from "../../../store";
-import { useAppColors } from "../../../services/hooks/useAppColors";
+import { PostListSlice } from "../PostsList/postFilters.slice";
+import { useAppSelector } from "@/store";
+import { useAppColors } from "@/services/hooks/useAppColors";
 
 const Post = ({ id, category, title, price, needsRevision }: PostType) => {
   const { bgGold, textGold, bgNeutral, bgPlaceholder, bg } = useAppColors();
